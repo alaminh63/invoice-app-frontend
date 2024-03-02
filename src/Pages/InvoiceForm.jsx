@@ -2,17 +2,35 @@ import React, { useState } from "react";
 
 const InvoiceForm = () => {
   const [singleItem, setSingleItem] = useState([]);
-  const [invoiceData, setInvoiceData] = useState({
-    issueTo: "",
-    issueDate: "",
-    returnDate: "",
-    issueDetails: "",
-  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Invoice Data:", invoiceData);
-    // Additional logic can be added to handle form submission
+    const form = event.target;
+    const issueTo = form.issueTo.value;
+    const issueDate = form.issueDate.value;
+    const returnDate = form.returnDate.value;
+    const issueDetails = form.issueDetails.value;
+    const postData = {
+      issueTo,
+      issueDate,
+      returnDate,
+      issueDetails,
+      singleItem,
+    };
+
+    fetch("http://localhost:3000/addInvoice", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          alert("Invoice Post Successfully");
+        }
+      });
   };
 
   const handleSingleItems = (event) => {
@@ -27,17 +45,9 @@ const InvoiceForm = () => {
     form.reset(); // Clear form fields after submission
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setInvoiceData({
-      ...invoiceData,
-      [name]: value,
-    });
-  };
-
   return (
     <div className="max-w-5xl mx-auto ">
-      <h2 className="text-2xl font-semibold mb-4">Invoice Information</h2>
+      <h2 className="text-2xl font-semibold mb-4 my-4">Invoice Information</h2>
       {singleItem.length ? (
         <div>
           <table className="w-full text-center max-w-3xl mx-auto border-collapse">
@@ -131,8 +141,7 @@ const InvoiceForm = () => {
             </label>
             <select
               name="issueTo"
-              value={invoiceData.issueTo}
-              onChange={handleInputChange}
+              placeholder=""
               className=" border-2 border-gray-300  text-sm  focus:ring-blue-500 focus:border-blue-500  w-full  p-2.5 "
             >
               <option value="" disabled>
@@ -151,8 +160,7 @@ const InvoiceForm = () => {
             <input
               type="date"
               name="issueDate"
-              value={invoiceData.issueDate}
-              onChange={handleInputChange}
+              placeholder=""
               className="border-2 border-gray-300  text-sm  focus:ring-blue-500 focus:border-blue-500  w-full  p-2.5"
             />
           </div>
@@ -163,8 +171,6 @@ const InvoiceForm = () => {
             <input
               type="date"
               name="returnDate"
-              value={invoiceData.returnDate}
-              onChange={handleInputChange}
               className="border-2 border-gray-300  text-sm  focus:ring-blue-500 focus:border-blue-500  w-full  p-2.5"
             />
           </div>
@@ -179,8 +185,6 @@ const InvoiceForm = () => {
           <textarea
             type="text"
             name="issueDetails"
-            value={invoiceData.issueDetails}
-            onChange={handleInputChange}
             className="border-2 py-12 border-gray-300  text-sm  focus:ring-blue-500 focus:border-blue-500  w-full  p-2.5"
           />
         </div>

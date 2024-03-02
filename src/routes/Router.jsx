@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "../layouts/Root";
 import Home from "../Pages/Home";
 import InvoiceForm from "../Pages/InvoiceForm";
+import All_Invoices from "../Pages/All_Invoices";
+import Invoice from "../Pages/Invoces";
 
 const Router = createBrowserRouter([
   {
@@ -15,6 +17,14 @@ const Router = createBrowserRouter([
       {
         path: "/invoiceForm",
         element: <InvoiceForm />,
+      },
+      {
+        path: "/allInvoices",
+        element: <All_Invoices />,
+      },
+      {
+        path: "/invoice/:id",
+        element: <Invoice />,
       },
     ],
   },

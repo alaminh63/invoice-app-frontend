@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const Invoice = () => {
+  const [invoice, setInvoice] = useState({});
+  console.log(invoice);
+  const { id } = useParams();
+  const { _id, returnDate, issueTo, issueDetails, issueDate, singleItem } =
+    invoice;
+  useEffect(() => {
+    const fetchInvoice = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/getInvoice/${id}`);
+        const data = await response.json();
+        setInvoice(data);
+      } catch (error) {
+        console.error("Error fetching invoice:", error);
+      }
+    };
+
+    fetchInvoice();
+  }, [id]);
+  const totalSum = singleItem?.reduce((accumulator, item) => {
+    const issueQuantity = parseFloat(item.issueQuantity);
+    return accumulator + issueQuantity;
+  }, 0);
   return (
     <>
-      <div className="bg-white p-8 shadow-md max-w-A4 mx-auto mt-8 rounded-md">
+      <div className="bg-white p-8 shadow-md max-w-6xl mx-auto mt-8 rounded-md">
         <div className="header-container relative mb-6">
           {/* Header with clip path and blue background */}
           <div className="h-8 w-full absolute top-0 right-0 clip-path-polygon"></div>
@@ -12,18 +35,20 @@ const Invoice = () => {
             Invoice
           </h1>
           <p className="text-gray-600 relative z-10">
-            Invoice #12345 | Date: 2024-03-02
+            Invoice #{_id} | Date: {issueDate}
           </p>
 
           {/* Additional Information */}
           <div className="flex justify-between mt-4 text-sm text-gray-700">
             <div>
-              <p>Issued by: Your Company Name</p>
-              <p>Contact: contact@yourcompany.com</p>
+              <p>Issued by: SysSolution</p>
+              <p>Contact: sysSolution@gmail.com</p>
             </div>
 
             <div>
-              <p>Payment Due: 2024-03-15</p>
+              <p>
+                <span className="font-semibold">Return:</span> {returnDate}
+              </p>
             </div>
           </div>
         </div>
@@ -32,12 +57,12 @@ const Invoice = () => {
         <div className="flex justify-between mb-4">
           <div>
             <p className="font-bold text-gray-700">Client:</p>
-            <p className="text-gray-800">MD Tarikul Islam</p>
-            <p className="text-gray-800">Email: tarikulIslam@gmail.com</p>
+            <p className="text-gray-800">{issueTo}</p>
+            <p className="text-gray-800">Email: {issueTo}@gmail.com</p>
           </div>
 
           <div>
-            <p className="font-bold text-gray-700">Billing Address:</p>
+            <p className="font-bold text-gray-700">Transfer To</p>
             <p className="text-gray-800">
               123 Main St, Cityville, State, 12345
             </p>
@@ -45,42 +70,38 @@ const Invoice = () => {
         </div>
 
         {/* Invoice Items */}
-        <table className="w-full border-collapse">
+        <table className="w-full text-center max-w-6xl mt-4 mx-auto border-collapse">
           <thead>
             <tr className="border-b">
-              <th className="py-2 text-left text-gray-800">Item</th>
-              <th className="py-2 text-left text-gray-800">Issued Item</th>
-              <th className="py-2 text-left text-gray-800">Item Quantity</th>
-              <th className="py-2 text-left text-gray-800">Item Unit</th>
-              <th className="py-2 text-left text-gray-800">Voucher Date</th>
-              <th className="py-2 text-left text-gray-800">Return Date</th>
-              <th className="py-2 text-left text-gray-800">Voucher Issue Details</th>
-              <th className="py-2 text-left text-gray-800">Description</th>
-              <th className="py-2 text-right text-gray-800">Amount</th>
+              <th className="py-2 ">Sr</th>
+              <th className="py-2 ">Item</th>
+              <th className="py-2 ">Issued Item</th>
+              <th className="py-2 ">Item Quantity</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b">
-              <td className="py-2 text-gray-800">1</td>
-              <td className="py-2 text-gray-800">Laptop</td>
-              <td className="py-2 text-gray-800">2</td>
-              <td className="py-2 text-gray-800">Piece(s)</td>
-              <td className="py-2 text-gray-800">2024-03-02</td>
-              <td className="py-2 text-gray-800">2024-03-10</td>
-              <td className="py-2 text-gray-800">Serial: ABC123</td>
-              <td className="py-2 text-gray-800">High-performance laptop</td>
-              <td className="py-2 text-right text-green-600 font-bold">
-                $1500.00
-              </td>
-            </tr>
+            {singleItem?.map((item, index) => (
+              <tr key={index} className="border-b">
+                <td className="py-2">{index + 1}</td>
+                <td className="py-2 ">{item.item}</td>
+                <td className="py-2 ">{item.itemUnit}</td>
+                <td className="py-2 ">{item.issueQuantity}</td>
+              </tr>
+            ))}
             {/* Add more rows as needed */}
           </tbody>
         </table>
-
+        <div>
+          <h3 className="font-semibold mt-5">More details about this issue:</h3>
+          <p>{issueDetails}</p>
+        </div>
         <div className="flex justify-end mt-4">
           {/* Total Amount */}
           <div>
-            <p className="text-lg font-bold text-gray-800">Total: $1500.00</p>
+            <p className="text-lg font-bold text-gray-800">
+              Total Quantity:{" "}
+              {totalSum !== undefined ? `${totalSum.toFixed()}` : "Loading..."}
+            </p>
           </div>
         </div>
       </div>
