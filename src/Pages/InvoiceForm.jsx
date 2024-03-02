@@ -3,6 +3,7 @@ import React, { useState } from "react";
 const InvoiceForm = () => {
   const [singleItem, setSingleItem] = useState([]);
 
+  //submit function for total form data
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -32,7 +33,7 @@ const InvoiceForm = () => {
         }
       });
   };
-
+  // single table form data it will show in table
   const handleSingleItems = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -82,7 +83,7 @@ const InvoiceForm = () => {
       ) : (
         ""
       )}
-
+      {/* single items for table */}
       <form onSubmit={handleSingleItems} className=" mt-5">
         <div className="flex gap-4">
           <div className="form-control w-full">
@@ -91,14 +92,19 @@ const InvoiceForm = () => {
             </label>
             <select
               name="item"
+              required
               className="border-2 border-gray-300  text-sm  focus:ring-blue-500 focus:border-blue-500  w-full  p-2.5"
             >
               <option value="" disabled>
                 Select an item
               </option>
-              <option value="item1">Item 1</option>
-              <option value="item2">Item 2</option>
-              <option value="item3">Item 3</option>
+              <option value="item1">Medicine</option>
+              <option value="item2">Injections</option>
+              <option value="item3">Clothes</option>
+              <option value="item3">Bags</option>
+              <option value="item3">Shoes</option>
+              <option value="item3">Food</option>
+              <option value="item3">Guns</option>
               {/* Add more options as needed */}
             </select>
           </div>
@@ -108,6 +114,7 @@ const InvoiceForm = () => {
             </label>
             <input
               type="number"
+              required
               name="issueQuantity"
               placeholder="-"
               className="border-2 border-gray-300  text-sm  focus:ring-blue-500 focus:border-blue-500  w-full  p-2.5"
@@ -119,6 +126,7 @@ const InvoiceForm = () => {
             </label>
             <input
               type="text"
+              required
               name="itemUnit"
               placeholder="-"
               className="border-2 border-gray-300  text-sm  focus:ring-blue-500 focus:border-blue-500  w-full  p-2.5"
@@ -132,6 +140,7 @@ const InvoiceForm = () => {
           Add
         </button>
       </form>
+      {/* all data information field */}
       <form onSubmit={handleSubmit} className=" ">
         <h2 className="text-2xl font-semibold mb-4">Invoice Details</h2>
         <div className="flex  gap-4  ">
@@ -148,8 +157,9 @@ const InvoiceForm = () => {
                 Select Name
               </option>
               <option value="tarikul">Tarikul Islam</option>
-              <option value="sahil">Sahil</option>
-              <option value="arnob">Arnob</option>
+              <option value="sahil">Sahil Abrar</option>
+              <option value="shahriar">Shahriar Rahman</option>
+              <option value="fofael">Tofael Hasan</option>
               {/* Add more options as needed */}
             </select>
           </div>

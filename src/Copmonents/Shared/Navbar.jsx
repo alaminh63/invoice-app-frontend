@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [activeNavItem, setActiveNavItem] = useState("home");
-
+// navbar items
   const navItems = [
     { address: "/", title: "Home" },
     { address: "/invoiceForm", title: "Add Invoice" },
@@ -11,8 +11,10 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-blue-500 p-4 flex justify-between px-20">
-      <h2 className="text-3xl text-white font-bold">InvoiceApp</h2>
+    <nav className="bg-blue-500 p-4 flex justify-between px-20 custom-navbar">
+      <Link to="/">
+        <h2 className="text-3xl text-white font-bold">InvoiceApp</h2>
+      </Link>
       <ul className="flex space-x-4">
         {navItems.map((item) => (
           <Link key={item.id} to={item.address}>

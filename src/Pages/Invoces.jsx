@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const Invoice = () => {
+  // invoice dynamic state
   const [invoice, setInvoice] = useState({});
-  console.log(invoice);
   const { id } = useParams();
   const { _id, returnDate, issueTo, issueDetails, issueDate, singleItem } =
     invoice;
+
+  // invoice data comming from server
   useEffect(() => {
     const fetchInvoice = async () => {
       try {
@@ -20,13 +22,20 @@ const Invoice = () => {
 
     fetchInvoice();
   }, [id]);
+
+  // sum of total quantity
   const totalSum = singleItem?.reduce((accumulator, item) => {
     const issueQuantity = parseFloat(item.issueQuantity);
     return accumulator + issueQuantity;
   }, 0);
+
+  // Function to handle printing
+  const handlePrint = () => {
+    window.print();
+  };
   return (
     <>
-      <div className="bg-white p-8 shadow-md max-w-6xl mx-auto mt-8 rounded-md">
+      <div className="bg-white p-8 h-[90vh] shadow-md max-w-6xl mx-auto mt-8 rounded-md">
         <div className="header-container relative mb-6">
           {/* Header with clip path and blue background */}
           <div className="h-8 w-full absolute top-0 right-0 clip-path-polygon"></div>
@@ -104,6 +113,12 @@ const Invoice = () => {
             </p>
           </div>
         </div>
+        <button
+          className=" custom-navbar border px-4 py-2 rounded-3xl text-white bg-blue-500"
+          onClick={handlePrint}
+        >
+          Print
+        </button>
       </div>
     </>
   );

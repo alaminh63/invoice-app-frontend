@@ -4,6 +4,7 @@ import Home from "../Pages/Home";
 import InvoiceForm from "../Pages/InvoiceForm";
 import All_Invoices from "../Pages/All_Invoices";
 import Invoice from "../Pages/Invoces";
+import EditInvoice from "../Pages/EditInvoice";
 
 const Router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const Router = createBrowserRouter([
         path: "/invoice/:id",
         element: <Invoice />,
       },
+      
     ],
   },
 ]);
